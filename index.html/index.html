@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Robot Elemental, My Name</title>
+<meta name="theme-color" content="#0a0e17">
+<meta name="description" content="เกมสำรวจและคราฟหุ่นยนต์ เก็บแร่ธาตุครบ 118 ธาตุจากตารางธาตุจริง">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Robot Elemental">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<section id="screen-cover" class="screen active">
+  <div class="cover-wrap">
+    <img id="cover-img" class="cover-img" alt="Robot Elemental cover">
+    <h1 class="game-title">ROBOT ELEMENTAL<span>MY NAME</span></h1>
+    <p class="cover-sub">ประกอบหุ่นยนต์ในฝันของคุณ แล้วออกสำรวจจักรวาลเพื่อค้นหาธาตุครบทั้ง 118 ธาตุ</p>
+    <div class="cover-btns">
+      <button id="btn-cover-play" class="btn primary big">▶ เริ่มเกม</button>
+      <button id="btn-cover-howto" class="btn ghost big">วิธีเล่น</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHARACTER CREATOR ================= -->
+<section id="screen-charcreate" class="screen">
+  <div class="panel">
+    <h2>ประกอบหุ่นยนต์ของคุณ</h2>
+    <canvas id="cc-canvas" width="360" height="320" class="cc-canvas"></canvas>
+    <div class="cc-parts">
+      <button class="cc-part-btn sel" data-part="head">หัว</button>
+      <button class="cc-part-btn" data-part="body">ลำตัว</button>
+      <button class="cc-part-btn" data-part="armL">แขนซ้าย</button>
+      <button class="cc-part-btn" data-part="armR">แขนขวา</button>
+      <button class="cc-part-btn" data-part="legL">ขาซ้าย</button>
+      <button class="cc-part-btn" data-part="legR">ขาขวา</button>
+    </div>
+    <div class="cc-color-row">
+      <span id="cc-part-label">หัว</span>
+      <input type="color" id="cc-color-input" value="#7ed957">
+    </div>
+    <div class="cc-swatches">
+      <div class="cc-swatch" style="background:#7ed957" data-color="#7ed957"></div>
+      <div class="cc-swatch" style="background:#3fd0ff" data-color="#3fd0ff"></div>
+      <div class="cc-swatch" style="background:#ffd93d" data-color="#ffd93d"></div>
+      <div class="cc-swatch" style="background:#ff7a45" data-color="#ff7a45"></div>
+      <div class="cc-swatch" style="background:#ff6b6b" data-color="#ff6b6b"></div>
+      <div class="cc-swatch" style="background:#9b6bff" data-color="#9b6bff"></div>
+      <div class="cc-swatch" style="background:#ffffff" data-color="#ffffff"></div>
+      <div class="cc-swatch" style="background:#0b1220" data-color="#0b1220"></div>
+    </div>
+    <button id="cc-fashion" class="btn primary">🛍️ ร้านแต่งตัว / ตู้เสื้อผ้า</button>
+    <div id="cc-stats" class="cc-stats"></div>
+    <div class="cc-actions">
+      <button id="cc-random" class="btn ghost">🎲 สุ่มสี</button>
+      <button id="cc-confirm" class="btn primary">ยืนยัน และเริ่มเกม</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MAIN MENU ================= -->
+<section id="screen-menu" class="screen">
+  <div class="panel menu-panel">
+    <canvas id="menu-canvas" width="280" height="220" class="menu-canvas"></canvas>
+    <h2 class="menu-title">Robot Elemental</h2>
+    <div class="hud-row">
+      <span>💰 <b id="menu-money">0</b></span>
+      <span>🎒 <b id="menu-cap">0/0</b></span>
+    </div>
+    <div class="menu-btns">
+      <button id="btn-menu-explore" class="btn primary big">🧭 ออกสำรวจ</button>
+      <button id="btn-menu-craft" class="btn big">🔧 คราฟอุปกรณ์</button>
+      <button id="btn-menu-shop" class="btn big">🏪 ร้านขายของ</button>
+      <button id="btn-menu-fashion" class="btn big">🛍️ ร้านแต่งตัว</button>
+      <button id="btn-menu-quests" class="btn big">🏆 เควสความสำเร็จ</button>
+      <button id="btn-menu-customize" class="btn big">🎨 แต่งตัวหุ่นยนต์</button>
+      <button id="btn-menu-howto" class="btn ghost big">❓ วิธีเล่น</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW TO PLAY ================= -->
+<section id="screen-howto" class="screen">
+  <div class="panel">
+    <h2>วิธีเล่น</h2>
+    <div id="howto-body" class="howto-body"></div>
+    <button class="btn primary btn-back-menu">กลับเมนู</button>
+    <button id="howto-close-cover" class="btn ghost">กลับหน้าปก</button>
+  </div>
+</section>
+
+<!-- ================= MAP SELECT ================= -->
+<section id="screen-mapselect" class="screen">
+  <div class="panel wide">
+    <h2>เลือกแมพสำรวจ</h2>
+    <div id="mapselect-list" class="map-grid"></div>
+    <button class="btn ghost btn-back-menu">กลับเมนู</button>
+  </div>
+</section>
+
+<!-- ================= CRAFT ================= -->
+<section id="screen-craft" class="screen">
+  <div class="panel wide">
+    <div class="panel-header"><h2>🔧 คราฟอุปกรณ์</h2><span>💰 <b id="craft-money">0</b></span></div>
+    <div id="craft-list" class="craft-list"></div>
+    <button class="btn ghost btn-back-menu">กลับเมนู</button>
+  </div>
+</section>
+
+<!-- ================= SHOP ================= -->
+<section id="screen-shop" class="screen">
+  <div class="panel wide">
+    <div class="panel-header"><h2>🏪 ร้านขายของ</h2><span>💰 <b id="shop-money">0</b></span></div>
+    <div id="shop-list" class="shop-list"></div>
+    <button class="btn ghost btn-back-menu">กลับเมนู</button>
+  </div>
+</section>
+
+<section id="screen-fashion" class="screen">
+  <div class="panel wide">
+    <div class="panel-header"><h2>🛍️ ร้านแต่งตัว</h2><span>💰 <b id="fs-money">0</b></span></div>
+    <div style="text-align:center"><canvas id="fs-canvas" width="360" height="260" class="cc-canvas"></canvas></div>
+    <div id="fs-tabs" class="cc-parts"></div>
+    <div id="fs-list" class="shop-list"></div>
+    <div class="cc-actions" style="flex-direction:row;justify-content:center;margin-top:10px">
+      <button id="fs-random" class="btn ghost">🎲 สุ่มชุดจากที่มี</button>
+      <button id="fs-back" class="btn">← ตกแต่งหุ่นยนต์</button>
+    </div>
+  </div>
+</section>
+
+<section id="screen-quests" class="screen">
+  <div class="panel wide">
+    <div class="panel-header"><h2>🏆 เควสความสำเร็จ</h2><span id="quest-sum"></span></div>
+    <div id="quest-list" class="shop-list"></div>
+    <button class="btn ghost btn-back-menu">กลับเมนู</button>
+  </div>
+</section>
+
+<!-- ================= GAME ================= -->
+<section id="screen-game" class="screen game-screen">
+  <div class="game-hud-top">
+    <button id="btn-game-exit" class="hud-btn">✕</button>
+    <button class="hud-btn snd-btn" aria-label="เสียง">🔊</button>
+    <span id="game-map-name" class="hud-map-name"></span>
+    <span class="hud-stats">💰 <b id="game-money">0</b> &nbsp; 🎒 <b id="game-cap">0/0</b></span>
+  </div>
+  <div class="hp-bar-wrap full" id="hp-wrap">
+    <div class="hp-bar-bg"><div id="hp-bar-ghost" class="hp-bar-ghost"></div><div id="hp-bar-fill" class="hp-bar-fill"></div></div>
+    <span id="hp-bar-text" class="hp-bar-text">100/100</span>
+  </div>
+  <canvas id="game-canvas" class="game-canvas"></canvas>
+  <div id="joy-base" class="joy-base"><div id="joy-thumb" class="joy-thumb"></div></div>
+  <button id="btn-attack" class="btn-attack">⚔️ โจมตี</button>
+  <button id="btn-mine" class="btn-mine">✋ เก็บ</button>
+  <div id="element-card" class="element-card"></div>
+  <div id="death-overlay" class="death-overlay">
+    <div class="death-box">
+      <div class="death-title">💥 หุ่นยนต์ถูกทำลาย!</div>
+      <p class="death-sub">ซ่อมแซมร่างกายแล้วกลับไปสู้ใหม่</p>
+      <div class="death-btns">
+        <button id="btn-respawn" class="btn primary big">🔧 ฟื้นคืนชีพ</button>
+        <button id="btn-death-exit" class="btn ghost big">กลับเมนู</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="loot-overlay" class="loot-overlay"><div class="loot-body"></div></div>
+<div id="toast" class="toast"></div>
+<button class="snd-btn snd-float" aria-label="เสียง">🔊</button>
+
+<script src="js/elements.js"></script>
+<script src="js/data.js"></script>
+<script src="js/cosmetics.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
